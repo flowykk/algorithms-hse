@@ -5,6 +5,7 @@
 Для начала были реализованы две сортировки из условия задачи по отдельности - **mergeSort** и **insertionSort**.
 
 **mergeSort** - сортировка состоящая из двух методов - `mergeSort()` и `merge()`, рассмотрим каждый из них по-отдельности.
+
 `mergeSort()`:
 ```cpp
 // Рекурсивная функция сортировки слиянием
@@ -93,7 +94,7 @@ void insertionSort(std::vector<int>& arr) {
 }
 ```
 
-Для удобства также был написан метод
+Для удобства проведения эксперимента и дальнейшего анализа был написан метод `mergePlusInsertionSort()`, который осуществляет гибридную **Merge+Insertion** сортировку.
 ```cpp
 void mergePlusInsertionSort(std::vector<int>& arr, int minSize, int left, int right) {
     if (arr.size() < minSize) {
@@ -114,6 +115,68 @@ void mergePlusInsertionSort(std::vector<int>& arr, int minSize, int left, int ri
     }
 }
 ```
+
+Для создания тестовых векторов я написал 3 метода: для генерации массивов максимальной длины(4000), которые заполняются случайными значениями в диапазоне от 0 до 3000 согласно условию.
+
+1. Метод `generateArray1Case()` для генерации массива, где сгенерированные числа неупорядочены.
+```cpp
+std::vector<int> generateArray1Case(int N) {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(0, 3000);
+
+    std::vector<int> array;
+
+    for (int i = 0; i < N; ++i) {
+        int el = dis(gen);
+        array.push_back(el);
+    }
+
+    return array;
+}
+```
+
+2. Метод `generateArray2Case()` для генерации массива, где сгенерированные числа упорядочены по невозрастанию в обратном порядке.
+```cpp
+std::vector<int> generateArray2Case(int N) {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(0, 3000);
+
+    std::vector<int> array;
+
+    for (int i = 0; i < N; ++i) {
+        int el = dis(gen);
+        array.push_back(el);
+    }
+
+    std::sort(array.rbegin(), array.rend());
+
+    return array;
+}
+```
+
+3. Метод `generateArray3Case()` для генерации массива, который "почти" отсортирован. Для этого в массиве выбирается 
+    ```cpp
+    std::vector<int> generateArray3Case(int N) {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> dis(0, 3000);
+    
+        std::vector<int> array;
+    
+        for (int i = 0; i < N; ++i) {
+            int el = dis(gen);
+            array.push_back(el);
+        }
+    
+        std::sort(array.begin(), array.end());
+    
+        return array;
+    }
+    ```
+
+    
 
 ## Анализ результатов 
 
