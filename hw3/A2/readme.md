@@ -119,44 +119,44 @@ void mergePlusInsertionSort(std::vector<int>& arr, int minSize, int left, int ri
 Для создания тестовых векторов я написал 3 метода: для генерации массивов максимальной длины(4000), которые заполняются случайными значениями в диапазоне от 0 до 3000 согласно условию.
 
 1. Метод `generateArray1Case()` для генерации массива, где сгенерированные числа неупорядочены.
-```cpp
-std::vector<int> generateArray1Case(int N) {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(0, 3000);
-
-    std::vector<int> array;
-
-    for (int i = 0; i < N; ++i) {
-        int el = dis(gen);
-        array.push_back(el);
+    ```cpp
+    std::vector<int> generateArray1Case(int N) {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> dis(0, 3000);
+    
+        std::vector<int> array;
+    
+        for (int i = 0; i < N; ++i) {
+            int el = dis(gen);
+            array.push_back(el);
+        }
+    
+        return array;
     }
+    ```
 
-    return array;
-}
-```
-
-2. Метод `generateArray2Case()` для генерации массива, где сгенерированные числа упорядочены по невозрастанию в обратном порядке.
-```cpp
-std::vector<int> generateArray2Case(int N) {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(0, 3000);
-
-    std::vector<int> array;
-
-    for (int i = 0; i < N; ++i) {
-        int el = dis(gen);
-        array.push_back(el);
+2. Метод `generateArray2Case()` для генерации массива, где сгенерированные числа упорядочены по невозрастанию в обратном порядке при помощи встроенной сортировки `std::sort()`.
+    ```cpp
+    std::vector<int> generateArray2Case(int N) {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> dis(0, 3000);
+    
+        std::vector<int> array;
+    
+        for (int i = 0; i < N; ++i) {
+            int el = dis(gen);
+            array.push_back(el);
+        }
+    
+        std::sort(array.rbegin(), array.rend());
+    
+        return array;
     }
+    ```
 
-    std::sort(array.rbegin(), array.rend());
-
-    return array;
-}
-```
-
-3. Метод `generateArray3Case()` для генерации массива, который "почти" отсортирован. Для этого в массиве выбирается 
+3. Метод `generateArray3Case()` для генерации массива, который отсортирован в порядке неубывания при помощи встроенной сортировки `std::sort()`.
     ```cpp
     std::vector<int> generateArray3Case(int N) {
         std::random_device rd;
@@ -175,7 +175,25 @@ std::vector<int> generateArray2Case(int N) {
         return array;
     }
     ```
-
+    
+    Для того, чтобы сделать массив из полученного массива "почти" отсортированны, позже будет применяться метод `makeAlmostSorted()`, который выбирает рандомным образом от 10 до 30 пар элементов, которые нужно переставить местами.
+    ```cpp
+    void makeAlmostSorted(std::vector<int>& array) {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> dis(10, 30);
+        int swaps = dis(gen);
+    
+        for (int i = 0; i < swaps; ++i) {
+            int index1 = std::rand() % array.size();
+            int index2 = std::rand() % array.size();
+    
+            int temp = array[index1];
+            array[index1] = array[index2];
+            array[index2] = temp;
+        }
+    }
+    ```
     
 
 ## Анализ результатов 
