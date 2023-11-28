@@ -2,9 +2,9 @@
 
 ## Код программы 
 ### Полный код программы можно посмотреть в [файле](experiment.cpp) 
-Для начала были реализованы две сортировки из условия задачи по отдельности - `mergeSort` и `insertionSort`.
+Для начала были реализованы две сортировки из условия задачи по отдельности - **mergeSort** и **insertionSort**.
 
-`mergeSort` - сортировка состоящая из двух методов - `mergeSort()` и `merge()`, рассмотрим каждый из них по-отдельности.
+**mergeSort** - сортировка состоящая из двух методов - `mergeSort()` и `merge()`, рассмотрим каждый из них по-отдельности.
 `mergeSort()`:
 ```cpp
 // Рекурсивная функция сортировки слиянием
@@ -93,7 +93,27 @@ void insertionSort(std::vector<int>& arr) {
 }
 ```
 
+Для удобства также был написан метод
+```cpp
+void mergePlusInsertionSort(std::vector<int>& arr, int minSize, int left, int right) {
+    if (arr.size() < minSize) {
+        insertionSort(arr);
+    }
+    else {
+        if (left < right) {
+            // Находим середину массива
+            int middle = left + (right - left) / 2;
 
+            // Рекурсивно сортируем две половины
+            mergePlusInsertionSort(arr, minSize, left, middle);
+            mergePlusInsertionSort(arr, minSize, middle + 1, right);
+
+            // Объединяем отсортированные половины
+            merge(arr, left, middle, right);
+        }
+    }
+}
+```
 
 ## Анализ результатов 
 
