@@ -317,11 +317,11 @@ N	№1	№2	№3
 ```
 
 #### Рассмотрим результат на графиках
-**Тестовые данные №1:**
+Тестовые данные №1:
 ![1](https://github.com/flowykk/algorithms-hse/assets/71427624/55f0d7c2-71c5-434c-80ff-00bb65b80094)
 
-**Тестовые данные №2:**
+Тестовые данные №2:
 ![2](https://github.com/flowykk/algorithms-hse/assets/71427624/48800290-9608-43a6-aaa3-a3f37b332a8f)
 
-**Тестовые данные №3:**
+Тестовые данные №3:
 ![3](https://github.com/flowykk/algorithms-hse/assets/71427624/60068208-97bf-4b6d-8da7-c6499b085430)
