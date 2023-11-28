@@ -194,7 +194,81 @@ void mergePlusInsertionSort(std::vector<int>& arr, int minSize, int left, int ri
         }
     }
     ```
-    
+
+Для выбора подмассивов нужной длины **N** из массива максимальной длины **4000** написан метод `cutArray()`, который выбирает рандомно начало нужного массива.
+```cpp
+std::vector<int> cutArray(std::vector<int> array, int maxN, int N) {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(0, maxN - N);
+    int start = dis(gen);
+
+    std::vector<int> result;
+
+    for (int i = start; i < start + N; ++i) {
+        result.push_back(array[i]);
+    }
+
+    return result;
+}
+```
+
+Для измерения времени работы реализации алгоритмов **mergeSort** и **mergePlusInsertionSort** было написано два отдельных метода:
+
+метод `experimentMerge()`. Где **maxN** - максимальная длина генерируемых массивов, **array1case**, **array2case** и **array3case** - тестовые данные, которые созданы согласно условию с помощью выше описанных методов. В методе присутсвует цикл, в котором перебираются длины генерируемых массивов (от 500 до 4000 с шагом 100). В цикле же каждый из массивов из входных данных "обрезается" по длине **N** с помощью вышеописанного метода `cutArray()`, и над полученными массивами ведутся вычисления времени работы сортировки ***mergeSort**, а результат в конце метода выводится на экран.
+```cpp
+void experimentMerge(int maxN, std::vector<int> array1case, std::vector<int> array2case, std::vector<int> array3case) {
+    for (int N = 500; N <= maxN; N += 100) {
+        std::vector<int> array1 = cutArray(array1case, maxN, N);
+        auto start = std::chrono::high_resolution_clock::now();
+        mergeSort(array1, 0, array1.size() - 1);
+        auto elapsed = std::chrono::high_resolution_clock::now() - start;
+        long long millisec1case = std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
+
+        std::vector<int> array2 = cutArray(array2case, maxN, N);
+        start = std::chrono::high_resolution_clock::now();
+        mergeSort(array2, 0, array2.size() - 1);
+        elapsed = std::chrono::high_resolution_clock::now() - start;
+        long long millisec2case = std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
+
+        std::vector<int> array3 = cutArray(array3case, maxN, N);
+        start = std::chrono::high_resolution_clock::now();
+        mergeSort(array3, 0, array3.size() - 1);
+        elapsed = std::chrono::high_resolution_clock::now() - start;
+        long long millisec3case = std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
+
+        std::cout << "N: " << N << "; time: " << millisec1case << " " << millisec2case << " " << millisec3case << std::endl;
+    }
+}
+```
+
+метод `experimentMergePlusInsertion()`. Написан аналогично предыдущему методу. Отличия - аргумент **minSize** - размер массива, при котором будет использоваться сортировка **insertionSort**, а внутри цикла используется метод `mergePlusInsertionSort()` для гибридной сортировки массива.
+```cpp
+void experimentMergePlusInsertion(int minSize, int maxN, std::vector<int> array1case, std::vector<int> array2case, std::vector<int> array3case) {
+    for (int N = 500; N <= maxN; N += 100) {
+        std::vector<int> array1 = cutArray(array1case, maxN, N);
+        auto start = std::chrono::high_resolution_clock::now();
+        mergePlusInsertionSort(array1, minSize, 0, array1.size() - 1);
+        auto elapsed = std::chrono::high_resolution_clock::now() - start;
+        long long millisec1case = std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
+
+        std::vector<int> array2 = cutArray(array2case, maxN, N);
+        start = std::chrono::high_resolution_clock::now();
+        mergePlusInsertionSort(array2, minSize, 0, array2.size() - 1);
+        elapsed = std::chrono::high_resolution_clock::now() - start;
+        long long millisec2case = std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
+
+        std::vector<int> array3 = cutArray(array3case, maxN, N);
+        makeAlmostSorted(array3);
+        start = std::chrono::high_resolution_clock::now();
+        mergePlusInsertionSort(array3, minSize, 0, array3.size() - 1);
+        elapsed = std::chrono::high_resolution_clock::now() - start;
+        long long millisec3case = std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
+
+        std::cout << "N: " << N << "; time: " << millisec1case << " " << millisec2case << " " << millisec3case << std::endl;
+    }
+}
+```
 
 ## Анализ результатов 
 
