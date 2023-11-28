@@ -474,10 +474,14 @@ N	№1	№2	№3
 ```
 
 #### Тестовые данные №1:
+![1](https://github.com/flowykk/algorithms-hse/assets/71427624/c53b44cb-e3cb-44bb-a663-29d14c10c0b9)
 
 #### Тестовые данные №2:
+![2](https://github.com/flowykk/algorithms-hse/assets/71427624/2750f4ef-2ddc-4d8f-9be8-d116eeed4167)
 
 #### Тестовые данные №3:
+![3](https://github.com/flowykk/algorithms-hse/assets/71427624/13d3cb30-be08-48eb-afc8-ff1d22bd9ed0)
+
 
 ### *minSize = 20*
 Усреднённые значения: 
@@ -522,7 +526,10 @@ N	№1	№2	№3
 ```
 
 #### Тестовые данные №1:
+![1](https://github.com/flowykk/algorithms-hse/assets/71427624/9713bd33-7d5c-4403-9539-227418d57f08)
 
 #### Тестовые данные №2:
+![2](https://github.com/flowykk/algorithms-hse/assets/71427624/e628b164-b437-49ac-bb62-4800ad5fd8e5)
 
 #### Тестовые данные №3:
+![3](https://github.com/flowykk/algorithms-hse/assets/71427624/4bac2fed-c0c6-4637-9bb6-26427f3f7c7b)
