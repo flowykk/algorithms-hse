@@ -8,17 +8,13 @@
 
 `mergeSort()`:
 ```cpp
-// Рекурсивная функция сортировки слиянием
 void mergeSort(std::vector<int>& arr, int left, int right) {
     if (left < right) {
-        // Находим середину массива
         int middle = left + (right - left) / 2;
 
-        // Рекурсивно сортируем две половины
         mergeSort(arr, left, middle);
         mergeSort(arr, middle + 1, right);
 
-        // Объединяем отсортированные половины
         merge(arr, left, middle, right);
     }
 }
@@ -26,16 +22,13 @@ void mergeSort(std::vector<int>& arr, int left, int right) {
 
 `merge()`:
 ```cpp
-// Функция для слияния двух отсортированных массивов
 void merge(std::vector<int>& arr, int left, int middle, int right) {
     int n1 = middle - left + 1;
     int n2 = right - middle;
 
-    // Создаем временные вспомогательные массивы
     std::vector<int> leftArray(n1);
     std::vector<int> rightArray(n2);
 
-    // Копируем данные во временные массивы leftArray[] и rightArray[]
     for (int i = 0; i < n1; i++) {
         leftArray[i] = arr[left + i];
     }
@@ -43,7 +36,6 @@ void merge(std::vector<int>& arr, int left, int middle, int right) {
         rightArray[j] = arr[middle + 1 + j];
     }
 
-    // Объединяем временные массивы обратно в основной массив arr[]
     int i = 0; // Индекс первого подмассива (leftArray)
     int j = 0; // Индекс второго подмассива (rightArray)
     int k = left; // Индекс объединенного массива (arr)
@@ -59,14 +51,12 @@ void merge(std::vector<int>& arr, int left, int middle, int right) {
         k++;
     }
 
-    // Копируем оставшиеся элементы leftArray[], если они есть
     while (i < n1) {
         arr[k] = leftArray[i];
         i++;
         k++;
     }
 
-    // Копируем оставшиеся элементы rightArray[], если они есть
     while (j < n2) {
         arr[k] = rightArray[j];
         j++;
@@ -75,17 +65,14 @@ void merge(std::vector<int>& arr, int left, int middle, int right) {
 }
 ```
 
-`insertionSort`:
+`insertionSort()` - здесь этот метод выполняет сортировку нужной части массива от `left` до `right`:
 ```cpp
-void insertionSort(std::vector<int>& arr) {
-    int n = arr.size();
-
-    for (int i = 1; i < n; i++) {
+void insertionSort(std::vector<int>& arr, int left, int right) {
+    for (int i = left + 1; i <= right; i++) {
         int key = arr[i];
         int j = i - 1;
 
-        // Перемещаем элементы массива, которые больше key, на одну позицию вперед
-        while (j >= 0 && arr[j] > key) {
+        while (j >= left && arr[j] > key) {
             arr[j + 1] = arr[j];
             j = j - 1;
         }
@@ -97,19 +84,15 @@ void insertionSort(std::vector<int>& arr) {
 Для удобства проведения эксперимента и дальнейшего анализа был написан метод `mergePlusInsertionSort()`, который осуществляет гибридную **Merge+Insertion** сортировку.
 ```cpp
 void mergePlusInsertionSort(std::vector<int>& arr, int minSize, int left, int right) {
-    if (arr.size() < minSize) {
-        insertionSort(arr);
-    }
-    else {
+    if (right - left <= minSize) {
+        insertionSort(arr, left, right);
+    } else {
         if (left < right) {
-            // Находим середину массива
             int middle = left + (right - left) / 2;
 
-            // Рекурсивно сортируем две половины
             mergePlusInsertionSort(arr, minSize, left, middle);
             mergePlusInsertionSort(arr, minSize, middle + 1, right);
 
-            // Объединяем отсортированные половины
             merge(arr, left, middle, right);
         }
     }
@@ -217,7 +200,7 @@ std::vector<int> cutArray(std::vector<int> array, int maxN, int N) {
 
 метод `experimentMerge()`. Где **maxN** - максимальная длина генерируемых массивов, **array1case**, **array2case** и **array3case** - тестовые данные, которые созданы согласно условию с помощью выше описанных методов. В методе присутсвует цикл, в котором перебираются длины генерируемых массивов (от 500 до 4000 с шагом 100). В цикле же каждый из массивов из входных данных "обрезается" по длине **N** с помощью вышеописанного метода `cutArray()`, и над полученными массивами ведутся вычисления времени работы сортировки ***mergeSort**, а результат в конце метода выводится на экран.
 ```cpp
-void experimentMerge(int maxN, std::vector<int> array1case, std::vector<int> array2case, std::vector<int> array3case) {
+void experimentMerge(int maxN, const std::vector<int>& array1case, const std::vector<int>& array2case, const std::vector<int>& array3case) {
     for (int N = 500; N <= maxN; N += 100) {
         std::vector<int> array1 = cutArray(array1case, maxN, N);
         auto start = std::chrono::high_resolution_clock::now();
@@ -237,14 +220,14 @@ void experimentMerge(int maxN, std::vector<int> array1case, std::vector<int> arr
         elapsed = std::chrono::high_resolution_clock::now() - start;
         long long millisec3case = std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
 
-        std::cout << "N: " << N << "; time: " << millisec1case << " " << millisec2case << " " << millisec3case << std::endl;
+        std::cout << N << " " << millisec1case << " " << millisec2case << " " << millisec3case << std::endl;
     }
 }
 ```
 
 метод `experimentMergePlusInsertion()`. Написан аналогично предыдущему методу. Отличия - аргумент **minSize** - размер массива, при котором будет использоваться сортировка **insertionSort**, а внутри цикла используется метод `mergePlusInsertionSort()` для гибридной сортировки массива.
 ```cpp
-void experimentMergePlusInsertion(int minSize, int maxN, std::vector<int> array1case, std::vector<int> array2case, std::vector<int> array3case) {
+void experimentMergePlusInsertion(int minSize, int maxN, const std::vector<int>& array1case, const std::vector<int>& array2case, const std::vector<int>& array3case) {
     for (int N = 500; N <= maxN; N += 100) {
         std::vector<int> array1 = cutArray(array1case, maxN, N);
         auto start = std::chrono::high_resolution_clock::now();
@@ -265,7 +248,7 @@ void experimentMergePlusInsertion(int minSize, int maxN, std::vector<int> array1
         elapsed = std::chrono::high_resolution_clock::now() - start;
         long long millisec3case = std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
 
-        std::cout << "N: " << N << "; time: " << millisec1case << " " << millisec2case << " " << millisec3case << std::endl;
+        std::cout << millisec1case << " " << millisec2case << " " << millisec3case << std::endl;
     }
 }
 ```
