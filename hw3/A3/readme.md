@@ -420,10 +420,13 @@ N	№1	№2	№3
 ```
 
 #### Тестовые данные №1:
+![image](https://github.com/flowykk/algorithms-hse/assets/71427624/c6901bc6-074e-44ff-b327-1c40c56f3f25)
 
 #### Тестовые данные №2:
+![image](https://github.com/flowykk/algorithms-hse/assets/71427624/f02afc17-f843-42ba-b8e8-bdbf47866153)
 
 #### Тестовые данные №3:
+![image](https://github.com/flowykk/algorithms-hse/assets/71427624/2a55ee32-0f5f-402d-bc5f-70a595b3843c)
 
 ### *minSize = 20*
 
@@ -521,10 +524,13 @@ N	№1	№2	№3
 ```
 
 #### Тестовые данные №1:
+![image](https://github.com/flowykk/algorithms-hse/assets/71427624/ca5bf1cb-d741-4f12-bf38-9b75972940e2)
 
 #### Тестовые данные №2:
+![image](https://github.com/flowykk/algorithms-hse/assets/71427624/569bf393-45c4-4e39-9f9f-2488c53e8b0a)
 
 #### Тестовые данные №3:
+![image](https://github.com/flowykk/algorithms-hse/assets/71427624/4bfa562f-2016-4ace-beba-b1fe0b0a9d31)
 
 ## Вывод:
 Быстрая сортировка имеет сложность O(n log n) в лучшем случае, а в худшем случае O(n^2). В случае заранее упорядоченных данных (тестовые наборы №2 и №3), QuickSort приходит к худшему случаю. В первом случае элементы случайны, что обеспечивает лучший случай.
