@@ -145,14 +145,18 @@ void quickPlusHeapSort(std::vector<int>& array, int minSize, int low, int high) 
         int pi = partition(array, low, high);
 
         if (pi - low < minSize)
+        {
             heapSort(array, pi - low);
-        else
+        } else {
             quickSort(array, low, pi - 1);
+        }
 
         if (high - pi < minSize)
+        {
             heapSort(array, high - pi - 1);
-        else
+        } else {
             quickSort(array, pi + 1, high);
+        }
     }
 }
 
