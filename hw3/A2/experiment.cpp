@@ -69,14 +69,12 @@ void makeAlmostSorted(std::vector<int>& array) {
 
 // Функция для сортировки вставками
 void insertionSort(std::vector<int>& arr, int left, int right) {
-    int n = right - left + 1;
-
-    for (int i = 0; i < n; i++) {
+    for (int i = left + 1; i <= right; i++) {
         int key = arr[i];
         int j = i - 1;
 
         // Перемещаем элементы массива, которые больше key, на одну позицию вперед
-        while (j >= 0 && arr[j] > key) {
+        while (j >= left && arr[j] > key) {
             arr[j + 1] = arr[j];
             j = j - 1;
         }
