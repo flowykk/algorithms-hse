@@ -130,27 +130,29 @@ void heapify(std::vector<int>& array, int n, int i) {
     }
 }
 
-void heapSort(std::vector<int>& array) {
-    int N = array.size();
-    for (int i = N / 2 - 1; i >= 0; --i) {
-        heapify(array, N, i);
-    }
-    for (int i = N - 1; i >= 0 ; --i) {
+void heapSort(std::vector<int>& array, int n) {
+    for (int i = n / 2 - 1; i >= 0; i--)
+        heapify(array, n, i);
+
+    for (int i = n - 1; i > 0; i--) {
         std::swap(array[0], array[i]);
         heapify(array, i, 0);
     }
 }
 
 void quickPlusHeapSort(std::vector<int>& array, int minSize, int low, int high) {
-    if (array.size() < minSize) {
-        heapSort(array);
-    } else {
-        if (low < high) {
-            int pivot_index = partition(array, low, high);
+    if (low < high) {
+        int pi = partition(array, low, high);
 
-            quickSort(array, low, pivot_index - 1);
-            quickSort(array, pivot_index + 1, high);
-        }
+        if (pi - low < minSize)
+            heapSort(array, pi - low);
+        else
+            quickSort(array, low, pi - 1);
+
+        if (high - pi < minSize)
+            heapSort(array, high - pi - 1);
+        else
+            quickSort(array, pi + 1, high);
     }
 }
 
