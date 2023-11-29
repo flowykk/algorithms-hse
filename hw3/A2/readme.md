@@ -299,16 +299,16 @@ N	№1	№2	№3
 4000	3,5	3,25	3
 ```
 
-#### Рассмотрим результат на графиках
-Тестовые данные №1:
+### Рассмотрим результат на графиках
+#### Тестовые данные №1:
 ![1](https://github.com/flowykk/algorithms-hse/assets/71427624/b2d7c219-6821-45ab-87f5-065d80c1a85d)
 
 
-Тестовые данные №2:
+#### Тестовые данные №2:
 ![2](https://github.com/flowykk/algorithms-hse/assets/71427624/a12d6ad1-91b0-46bb-bf7c-54b894718d6f)
 
 
-Тестовые данные №3:
+#### Тестовые данные №3:
 ![3](https://github.com/flowykk/algorithms-hse/assets/71427624/270be363-00fb-4bae-af03-55dec728d7c5)
 
 
@@ -411,13 +411,13 @@ N	№1	№2	№3
 4000	1	1	1
 ```
 
-Тестовые данные №1:
+#### Тестовые данные №1:
 ![1](https://github.com/flowykk/algorithms-hse/assets/71427624/690d6705-36a2-4c7a-897e-c21669738dcb)
 
-Тестовые данные №2:
+#### Тестовые данные №2:
 ![2](https://github.com/flowykk/algorithms-hse/assets/71427624/13ded4fd-d204-40fd-ac1d-4561279ca0f6)
 
-Тестовые данные №3:
+#### Тестовые данные №3:
 ![3](https://github.com/flowykk/algorithms-hse/assets/71427624/81c5bd2b-bfd1-4acd-b0c1-0dae548d1818)
 
 ### *minSize = 20*
@@ -463,13 +463,13 @@ N	№1	№2	№3
 4000	1	1	1
 ```
 
-Тестовые данные №1:
+#### Тестовые данные №1:
 ![1](https://github.com/flowykk/algorithms-hse/assets/71427624/15a86fa7-2da7-4043-8fbd-2b4fd27e5318)
 
-Тестовые данные №2:
+#### Тестовые данные №2:
 ![2](https://github.com/flowykk/algorithms-hse/assets/71427624/41063f08-53e2-43d8-90ca-c4d3b0e35286)
 
-Тестовые данные №3:
+#### Тестовые данные №3:
 ![3](https://github.com/flowykk/algorithms-hse/assets/71427624/161d2f6b-ef26-4a97-a814-5d7b31bff758)
 
 
@@ -516,13 +516,13 @@ N	№1	№2	№3
 4000	0,5	0,25	0,25
 ```
 
-Тестовые данные №1:
+#### Тестовые данные №1:
 ![1](https://github.com/flowykk/algorithms-hse/assets/71427624/5a9350f6-5755-4576-a180-86e2cf83f275)
 
-Тестовые данные №2:
+#### Тестовые данные №2:
 ![2](https://github.com/flowykk/algorithms-hse/assets/71427624/b804ecd3-81ee-41a6-bbb6-6271cda921ac)
 
-Тестовые данные №3:
+#### Тестовые данные №3:
 ![3](https://github.com/flowykk/algorithms-hse/assets/71427624/8b688dad-c855-4ba1-b4d0-358373f11801)
 
 ## Вывод:
