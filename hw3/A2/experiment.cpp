@@ -68,10 +68,10 @@ void makeAlmostSorted(std::vector<int>& array) {
 }
 
 // Функция для сортировки вставками
-void insertionSort(std::vector<int>& arr) {
-    int n = arr.size();
+void insertionSort(std::vector<int>& arr, int left, int right) {
+    int n = right - left + 1;
 
-    for (int i = 1; i < n; i++) {
+    for (int i = 0; i < n; i++) {
         int key = arr[i];
         int j = i - 1;
 
@@ -148,10 +148,9 @@ void mergeSort(std::vector<int>& arr, int left, int right) {
 }
 
 void mergePlusInsertionSort(std::vector<int>& arr, int minSize, int left, int right) {
-    if (arr.size() < minSize) {
-        insertionSort(arr);
-    }
-    else {
+    if (right - left <= minSize) {
+        insertionSort(arr, left, right);
+    } else {
         if (left < right) {
             // Находим середину массива
             int middle = left + (right - left) / 2;
@@ -246,7 +245,7 @@ int main() {
 
     //experimentMerge(maxN, array1case, array2case, array3case);
 
-    int minSize = 20;
+    int minSize = 50;
     experimentMergePlusInsertion(minSize, maxN, array1case, array2case, array3case);
 
     return 0;
