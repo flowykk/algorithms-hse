@@ -310,15 +310,13 @@ N	№1	№2	№3
 
 ### Рассмотрим результат на графиках
 #### Тестовые данные №1:
-![1](https://github.com/flowykk/algorithms-hse/assets/71427624/11d36f4a-a222-4ee0-a204-53f9c1e2a0b2)
-
+![image](https://github.com/flowykk/algorithms-hse/assets/71427624/bac1647d-80cb-4ad8-8665-c93f09561fb4)
 
 #### Тестовые данные №2:
-![2](https://github.com/flowykk/algorithms-hse/assets/71427624/89bd4def-3df3-4539-8d55-929ad70c3083)
-
+![image](https://github.com/flowykk/algorithms-hse/assets/71427624/ae1904c3-0ad2-4557-bb24-643907509d3b)
 
 #### Тестовые данные №3:
-![3](https://github.com/flowykk/algorithms-hse/assets/71427624/6c6cbcc8-4f6d-43a1-962c-4dcc1f8834ef)
+![image](https://github.com/flowykk/algorithms-hse/assets/71427624/00c76591-7a41-4341-821b-5e76d16c93b3)
 
 Смотря на эти графики и усреднённые значения можно сделать следующий вывод: В случае с наборами данных №2 и №3 QuickSort приходит к худшему случаю, ведь выбирая опорный элемент деление массива в этих ситуациях становится неэффективным. А с тестовыми данными №1, где элементы неупорядочены, опорные элементы лучше распределены, а это в свою очередь приводит к лучшей производительности. 
 
@@ -471,11 +469,13 @@ N	№1	№2	№3
 ```
 
 #### Тестовые данные №1:
+![image](https://github.com/flowykk/algorithms-hse/assets/71427624/21e4a384-915d-4398-9324-f0ca9fc1eec1)
 
 #### Тестовые данные №2:
+![image](https://github.com/flowykk/algorithms-hse/assets/71427624/4864ffe5-372b-48b8-983c-165faf286fe7)
 
 #### Тестовые данные №3:
-
+![image](https://github.com/flowykk/algorithms-hse/assets/71427624/69f276bd-c0ab-4434-81d5-4c8d2932f400)
 
 ### *minSize = 50*
 
