@@ -48,19 +48,23 @@ std::vector<int> generateArray3Case(int N) {
 
     std::sort(array.begin(), array.end());
 
-    std::uniform_int_distribution<> swap_count(5, 20);
-    int swaps = swap_count(gen);
+    return array;
+}
+
+void makeAlmostSorted(std::vector<int>& array) {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(10, 30);
+    int swaps = dis(gen);
 
     for (int i = 0; i < swaps; ++i) {
-        int index1 = std::rand() % N;
-        int index2 = std::rand() % N;
+        int index1 = std::rand() % array.size();
+        int index2 = std::rand() % array.size();
 
         int temp = array[index1];
         array[index1] = array[index2];
         array[index2] = temp;
     }
-
-    return array;
 }
 
 // Функция для сортировки вставками
@@ -185,13 +189,7 @@ void print(const std::vector<int>& array) {
     std::cout << std::endl;
 }
 
-void experimentMerge() {
-    int maxN = 4000;
-    std::vector<int> array1case = generateArray1Case(maxN);
-    std::vector<int> array2case = generateArray2Case(maxN);
-    std::vector<int> array3case = generateArray3Case(maxN);
-    print(array2case);
-
+void experimentMerge(int maxN, const std::vector<int>& array1case, const std::vector<int>& array2case, const std::vector<int>& array3case) {
     for (int N = 500; N <= maxN; N += 100) {
         std::vector<int> array1 = cutArray(array1case, maxN, N);
         auto start = std::chrono::high_resolution_clock::now();
@@ -199,28 +197,23 @@ void experimentMerge() {
         auto elapsed = std::chrono::high_resolution_clock::now() - start;
         long long millisec1case = std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
 
-        std::vector<int> array2 = cutArray(array1case, maxN, N);
+        std::vector<int> array2 = cutArray(array2case, maxN, N);
         start = std::chrono::high_resolution_clock::now();
         mergeSort(array2, 0, array2.size() - 1);
         elapsed = std::chrono::high_resolution_clock::now() - start;
         long long millisec2case = std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
 
-        std::vector<int> array3 = cutArray(array1case, maxN, N);
+        std::vector<int> array3 = cutArray(array3case, maxN, N);
         start = std::chrono::high_resolution_clock::now();
         mergeSort(array3, 0, array3.size() - 1);
         elapsed = std::chrono::high_resolution_clock::now() - start;
         long long millisec3case = std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
 
-        std::cout << "N: " << N << "; time: " << millisec1case << " " << millisec2case << " " << millisec3case << std::endl;
+        std::cout << N << " " << millisec1case << " " << millisec2case << " " << millisec3case << std::endl;
     }
 }
 
-void experimentMergePlusInsertion(int minSize) {
-    int maxN = 4000;
-    std::vector<int> array1case = generateArray1Case(maxN);
-    std::vector<int> array2case = generateArray2Case(maxN);
-    std::vector<int> array3case = generateArray3Case(maxN);
-
+void experimentMergePlusInsertion(int minSize, int maxN, const std::vector<int>& array1case, const std::vector<int>& array2case, const std::vector<int>& array3case) {
     for (int N = 500; N <= maxN; N += 100) {
         std::vector<int> array1 = cutArray(array1case, maxN, N);
         auto start = std::chrono::high_resolution_clock::now();
@@ -228,37 +221,33 @@ void experimentMergePlusInsertion(int minSize) {
         auto elapsed = std::chrono::high_resolution_clock::now() - start;
         long long millisec1case = std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
 
-        std::vector<int> array2 = cutArray(array1case, maxN, N);
+        std::vector<int> array2 = cutArray(array2case, maxN, N);
         start = std::chrono::high_resolution_clock::now();
         mergePlusInsertionSort(array2, minSize, 0, array2.size() - 1);
         elapsed = std::chrono::high_resolution_clock::now() - start;
         long long millisec2case = std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
 
-        std::vector<int> array3 = cutArray(array1case, maxN, N);
+        std::vector<int> array3 = cutArray(array3case, maxN, N);
+        makeAlmostSorted(array3);
         start = std::chrono::high_resolution_clock::now();
         mergePlusInsertionSort(array3, minSize, 0, array3.size() - 1);
         elapsed = std::chrono::high_resolution_clock::now() - start;
         long long millisec3case = std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
 
-        std::cout << "N: " << N << "; time: " << millisec1case << " " << millisec2case << " " << millisec3case
-                  << std::endl;
+        std::cout << millisec1case << " " << millisec2case << " " << millisec3case << std::endl;
     }
 }
 
 int main() {
-    //experimentMerge();
-    //experimentMergePlusInsertion();
+    int maxN = 4000;
+    std::vector<int> array1case = generateArray1Case(maxN);
+    std::vector<int> array2case = generateArray2Case(maxN);
+    std::vector<int> array3case = generateArray3Case(maxN);
 
-    std::vector<int> array = generateArray1Case(100);
+    //experimentMerge(maxN, array1case, array2case, array3case);
 
     int minSize = 20;
-    // Вызываем функцию сортировки вставками
-    mergePlusInsertionSort(array, minSize, 0, array.size() - 1);
-
-    std::cout << "\nОтсортированный массив: ";
-    for (int num : array) {
-        std::cout << num << " ";
-    }
+    experimentMergePlusInsertion(minSize, maxN, array1case, array2case, array3case);
 
     return 0;
 }
