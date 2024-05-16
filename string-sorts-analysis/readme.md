@@ -296,6 +296,43 @@ void experimentStringQuickSort(StringGenerator generator, int maxN, const vector
 
 ## Анализ DefaultMergeSort
 
+Метод `experimentMergeSort()`:
+
+
+```cpp
+void experimentMergeSort(StringGenerator generator, int maxN, const vector<string>& array1case, const vector<string>& array2case, const vector<string>& array3case) {
+    for (int N = 100; N <= maxN; N += 100) {
+        size_t opers1 = 0;
+        std::vector<string> array1 = generator.cutArray(array1case, maxN, N);
+        auto start = std::chrono::high_resolution_clock::now();
+        DefaultMergeSort::mergeSort(array1, 0, N - 1, opers1);
+        auto elapsed = std::chrono::high_resolution_clock::now() - start;
+        long long millisec1case = std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
+
+        size_t opers2 = 0;
+        std::vector<string> array2 = generator.cutArray(array2case, maxN, N);
+        start = std::chrono::high_resolution_clock::now();
+        DefaultMergeSort::mergeSort(array2, 0, N - 1, opers2);
+        elapsed = std::chrono::high_resolution_clock::now() - start;
+        long long millisec2case = std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
+
+        size_t opers3 = 0;
+        std::vector<string> array3 = generator.cutArray(array3case, maxN, N);
+        start = std::chrono::high_resolution_clock::now();
+        DefaultMergeSort::mergeSort(array3, 0, N - 1, opers3);
+        elapsed = std::chrono::high_resolution_clock::now() - start;
+        long long millisec3case = std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
+
+        std::cout << "N = " << N << " (" << millisec1case << ", " << opers1 << "), ("<< millisec2case << ", " << opers2 << "), (" << millisec3case << ", " << opers3 << ")" << std::endl;
+        //std::cout << N << " " << millisec1case << " " << millisec2case << " " << millisec3case << std::endl;
+    }
+}
+```
+
+## Вывод:
+
+Смотря на графики можно понять, что на неупорядоченном наборе данных сортировка слиянием работает чуть медленнее, чем в остальных случаях. Это происходит, потому что на неупорядоченном массиве `mergeSort` часто разделяет и сливает элементы, даже если они близки по значению, также затрачиывается больше памяти и ресурсов на рекурсию. Это вызывает дополнительные операции. В упорядоченных массивах (особенно в обратном порядке), меньше слияний, так как большинство элементов уже находятся в нужной позиции. В "почти" отсортированном массиве также меньше перестановок, что ускоряет сортировку.
+По тем же причинам количество посимволньных сравнений во время работы такой сортировки для тестового набора №1 выше, чем для наборов №2 и №3.
 
 ## Тестовые данные 
 
