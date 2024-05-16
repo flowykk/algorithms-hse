@@ -13,7 +13,7 @@
 ```cpp
 class DefaultQuickSort {
     public:
-    static int partition(vector<string>& arr, int low, int high) {
+    static int partition(vector<string>& arr, int low, int high, size_t &sum) {
         string pivot = arr[high];
         int i = low - 1;
 
@@ -22,17 +22,17 @@ class DefaultQuickSort {
                 ++i;
                 swap(arr[i], arr[j]);
             }
+            sum += std::min(arr[i].size(), pivot.size());
         }
         swap(arr[i + 1], arr[high]);
         return i + 1;
     }
 
-    static void quicksort(vector<string>& arr, int low, int high) {
+    static void quicksort(vector<string>& arr, int low, int high, size_t &sum) {
         if (low < high) {
-            int pi = partition(arr, low, high);
-
-            quicksort(arr, low, pi - 1);
-            quicksort(arr, pi + 1, high);
+            int pi = partition(arr, low, high, sum);
+            quicksort(arr, low, pi - 1, sum);
+            quicksort(arr, pi + 1, high, sum);
         }
     }
 };
@@ -42,7 +42,7 @@ class DefaultQuickSort {
 ```cpp
 class DefaultMergeSort {
 public:
-    static void merge(vector<string>& arr, int left, int mid, int right) {
+    static void merge(vector<string>& arr, int left, int mid, int right, size_t &sum) {
         int n1 = mid - left + 1;
         int n2 = right - mid;
 
@@ -64,6 +64,8 @@ public:
                 ++j;
             }
             ++k;
+            sum += std::min(arr[i].size(), arr[j].size());
+
         }
 
         while (i < n1) {
@@ -79,14 +81,14 @@ public:
         }
     }
 
-    static void mergeSort(vector<string>& arr, int left, int right) {
+    static void mergeSort(vector<string>& arr, int left, int right, size_t &sum) {
         if (left >= right)
             return;
 
         int mid = left + (right - left) / 2;
-        mergeSort(arr, left, mid);
-        mergeSort(arr, mid + 1, right);
-        merge(arr, left, mid, right);
+        mergeSort(arr, left, mid, sum);
+        mergeSort(arr, mid + 1, right, sum);
+        merge(arr, left, mid, right, sum);
     }
 };
 ```
