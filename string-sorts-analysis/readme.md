@@ -13,7 +13,7 @@
 ```cpp
 class DefaultQuickSort {
     public:
-    static int partition(vector<string>& arr, int low, int high, size_t &sum) {
+    static int partition(vector<string>& arr, int low, int high, size_t &opers) {
         string pivot = arr[high];
         int i = low - 1;
 
@@ -22,17 +22,17 @@ class DefaultQuickSort {
                 ++i;
                 swap(arr[i], arr[j]);
             }
-            sum += std::min(arr[i].size(), pivot.size());
+            opers += std::min(arr[i].size(), pivot.size());
         }
         swap(arr[i + 1], arr[high]);
         return i + 1;
     }
 
-    static void quicksort(vector<string>& arr, int low, int high, size_t &sum) {
+    static void quicksort(vector<string>& arr, int low, int high, size_t &opers) {
         if (low < high) {
-            int pi = partition(arr, low, high, sum);
-            quicksort(arr, low, pi - 1, sum);
-            quicksort(arr, pi + 1, high, sum);
+            int pi = partition(arr, low, high, opers);
+            quicksort(arr, low, pi - 1, opers);
+            quicksort(arr, pi + 1, high, opers);
         }
     }
 };
@@ -42,7 +42,7 @@ class DefaultQuickSort {
 ```cpp
 class DefaultMergeSort {
 public:
-    static void merge(vector<string>& arr, int left, int mid, int right, size_t &sum) {
+    static void merge(vector<string>& arr, int left, int mid, int right, size_t &opers) {
         int n1 = mid - left + 1;
         int n2 = right - mid;
 
@@ -64,7 +64,7 @@ public:
                 ++j;
             }
             ++k;
-            sum += std::min(arr[i].size(), arr[j].size());
+            opers += std::min(arr[i].size(), arr[j].size());
 
         }
 
@@ -81,14 +81,14 @@ public:
         }
     }
 
-    static void mergeSort(vector<string>& arr, int left, int right, size_t &sum) {
+    static void mergeSort(vector<string>& arr, int left, int right, size_t &opers) {
         if (left >= right)
             return;
 
         int mid = left + (right - left) / 2;
-        mergeSort(arr, left, mid, sum);
-        mergeSort(arr, mid + 1, right, sum);
-        merge(arr, left, mid, right, sum);
+        mergeSort(arr, left, mid, opers);
+        mergeSort(arr, mid + 1, right, opers);
+        merge(arr, left, mid, right, opers);
     }
 };
 ```
@@ -97,7 +97,7 @@ public:
 ```cpp
 class StringQuickSort {
 public:
-    static vector<string> stringQuickSort(vector<string> &r, size_t l, size_t &sum) {
+    static vector<string> stringQuickSort(vector<string> &r, size_t l, size_t &opers) {
         if (r.size() <= 1) return r;
         vector<string> rExcl;
         vector<string> tmp;
@@ -122,18 +122,18 @@ public:
         for (size_t i = 0; i < r.size(); i++) {
             if (r[i][l] < pivot[l]) {
                 R_less.push_back(r[i]);
-                sum++;
+                opers++;
             } else if (r[i][l] > pivot[l]) {
-                sum += 2;
+                opers += 2;
                 R_equal.push_back(r[i]);
             } else {
-                sum += 2;
+                opers += 2;
                 R_great.push_back(r[i]);
             }
         }
-        R_less = stringQuickSort(R_less, l, sum);
-        R_equal = stringQuickSort(R_equal, l, sum);
-        R_great = stringQuickSort(R_great, l + 1, sum);
+        R_less = stringQuickSort(R_less, l, opers);
+        R_equal = stringQuickSort(R_equal, l, opers);
+        R_great = stringQuickSort(R_great, l + 1, opers);
 
         vector<string> result;
         copy(rExcl.begin(), rExcl.end(), back_inserter(result));
@@ -146,112 +146,67 @@ public:
 };
 ```
 
-Для удобства проведения эксперимента и дальнейшего анализа был написан метод `mergePlusInsertionSort()`, который осуществляет гибридную **Merge+Insertion** сортировку.
-```cpp
-void mergePlusInsertionSort(std::vector<int>& arr, int minSize, int left, int right) {
-    if (right - left <= minSize) {
-        insertionSort(arr, left, right);
-    } else {
-        if (left < right) {
-            int middle = left + (right - left) / 2;
+Для создания тестовых векторов было написано 3 метода: для генерации массивов максимальной длины (3000), которые заполняются случайными значениями в диапазоне от 0 до 3000 согласно условию.
 
-            mergePlusInsertionSort(arr, minSize, left, middle);
-            mergePlusInsertionSort(arr, minSize, middle + 1, right);
-
-            merge(arr, left, middle, right);
-        }
-    }
-}
-```
-
-Для создания тестовых векторов я написал 3 метода: для генерации массивов максимальной длины(4000), которые заполняются случайными значениями в диапазоне от 0 до 3000 согласно условию.
-
-1. Метод `generateArray1Case()` для генерации массива, где сгенерированные числа неупорядочены.
+1. Метод `generateArray1Case()` для генерации массива, где сгенерированные строки неупорядочены.
     ```cpp
-    std::vector<int> generateArray1Case(int N) {
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<> dis(0, 3000);
-    
-        std::vector<int> array;
-    
-        for (int i = 0; i < N; ++i) {
-            int el = dis(gen);
-            array.push_back(el);
+    vector<string> generateArray1Case(int n) {
+        vector<string> array;
+
+        random_device rd;
+        mt19937 gen(rd());
+        uniform_int_distribution<> len(10, 200);
+
+        for (int i = 0; i < n; ++i) {
+            array.push_back(generateRandomString(len(gen)));
         }
-    
+
         return array;
     }
     ```
 
-2. Метод `generateArray2Case()` для генерации массива, где сгенерированные числа упорядочены по невозрастанию в обратном порядке при помощи встроенной сортировки `std::sort()`.
+2. Метод `generateArray2Case()` для генерации массива, где сгенерированные строки отсортированы в обратном порядке при помощи встроенной сортировки `std::sort()`.
     ```cpp
-    std::vector<int> generateArray2Case(int N) {
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<> dis(0, 3000);
-    
-        std::vector<int> array;
-    
-        for (int i = 0; i < N; ++i) {
-            int el = dis(gen);
-            array.push_back(el);
-        }
-    
-        std::sort(array.rbegin(), array.rend());
-    
+    vector<string> generateArray2Case(int n) {
+        vector<string> array = generateArray1Case(n);
+        sort(array.begin(), array.end());
+        reverse(array.begin(), array.end());
+
         return array;
     }
     ```
 
-3. Метод `generateArray3Case()` для генерации массива, который отсортирован в порядке неубывания при помощи встроенной сортировки `std::sort()`.
+3. Метод `generateArray3Case()` для генерации массива, который "почти" отсортирован засчет перестановки некоторых строк массива местами.
     ```cpp
-    std::vector<int> generateArray3Case(int N) {
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<> dis(0, 3000);
-    
-        std::vector<int> array;
-    
-        for (int i = 0; i < N; ++i) {
-            int el = dis(gen);
-            array.push_back(el);
-        }
-    
-        std::sort(array.begin(), array.end());
-    
-        return array;
-    }
-    ```
-    
-    Для того, чтобы сделать из полученного массива "почти" отсортированный массив, позже будет применяться метод `makeAlmostSorted()`, который выбирает рандомным образом от 10 до 30 пар элементов, которые нужно переставить местами.
-    ```cpp
-    void makeAlmostSorted(std::vector<int>& array) {
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<> dis(10, 30);
+    vector<string> generateArray3Case(int n) {
+        vector<string> array = generateArray1Case(n);
+        sort(array.begin(), array.end());
+
+        random_device rd;
+        mt19937 gen(rd());
+        uniform_int_distribution<> dis(1, 2);
+
         int swaps = dis(gen);
-    
         for (int i = 0; i < swaps; ++i) {
-            int index1 = std::rand() % array.size();
-            int index2 = std::rand() % array.size();
-    
-            int temp = array[index1];
-            array[index1] = array[index2];
-            array[index2] = temp;
+            uniform_int_distribution<> dis_n(0, n - 1);
+            int idx1 = dis_n(gen);
+            int idx2 = dis_n(gen);
+            swap(array[idx1], array[idx2]);
         }
+
+        return array;
     }
     ```
 
-Для выбора подмассивов нужной длины **N** из массива максимальной длины **4000** написан метод `cutArray()`, который выбирает рандомно начало нужного массива.
+Для выбора подмассивов нужной длины **N** из массива максимальной длины **3000** написан метод `cutArray()`, который выбирает рандомно начало нужного массива.
 ```cpp
-std::vector<int> cutArray(std::vector<int> array, int maxN, int N) {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(0, maxN - N);
+vector<string> cutArray(vector<string> array, int maxN, int N) {
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> dis(0, maxN - N);
     int start = dis(gen);
 
-    std::vector<int> result;
+    vector<string> result;
 
     for (int i = start; i < start + N; ++i) {
         result.push_back(array[i]);
@@ -261,31 +216,36 @@ std::vector<int> cutArray(std::vector<int> array, int maxN, int N) {
 }
 ```
 
-Для измерения времени работы реализации алгоритмов **mergeSort** и **mergePlusInsertionSort** было написано два отдельных метода:
+## Анализ DefaultQuickSort
+Для измерения времени работы реализации алгоритма обычной `quickSort` был написан метод experimentQuickSort():
 
 Метод `experimentMerge()`. Где **maxN** - максимальная длина генерируемых массивов, **array1case**, **array2case** и **array3case** - тестовые данные, которые созданы согласно условию с помощью выше описанных методов. В методе присутсвует цикл, в котором перебираются длины генерируемых массивов (от 500 до 4000 с шагом 100). В цикле же каждый из массивов из входных данных "обрезается" по длине **N** с помощью вышеописанного метода `cutArray()`, и над полученными массивами ведутся вычисления времени работы сортировки **mergeSort**, а результат в конце метода выводится на экран.
 ```cpp
-void experimentMerge(int maxN, const std::vector<int>& array1case, const std::vector<int>& array2case, const std::vector<int>& array3case) {
-    for (int N = 500; N <= maxN; N += 100) {
-        std::vector<int> array1 = cutArray(array1case, maxN, N);
+void experimentQuickSort(StringGenerator generator, int maxN, const vector<string>& array1case, const vector<string>& array2case, const vector<string>& array3case) {
+    for (int N = 100; N <= maxN; N += 100) {
+        size_t opers1 = 0;
+        std::vector<string> array1 = generator.cutArray(array1case, maxN, N);
         auto start = std::chrono::high_resolution_clock::now();
-        mergeSort(array1, 0, array1.size() - 1);
+        DefaultQuickSort::quicksort(array1, 0, N - 1, opers1);
         auto elapsed = std::chrono::high_resolution_clock::now() - start;
         long long millisec1case = std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
 
-        std::vector<int> array2 = cutArray(array2case, maxN, N);
+        size_t opers2 = 0;
+        std::vector<string> array2 = generator.cutArray(array2case, maxN, N);
         start = std::chrono::high_resolution_clock::now();
-        mergeSort(array2, 0, array2.size() - 1);
+        DefaultQuickSort::quicksort(array2, 0, N - 1, opers2);
         elapsed = std::chrono::high_resolution_clock::now() - start;
         long long millisec2case = std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
 
-        std::vector<int> array3 = cutArray(array3case, maxN, N);
+        size_t opers3 = 0;
+        std::vector<string> array3 = generator.cutArray(array3case, maxN, N);
         start = std::chrono::high_resolution_clock::now();
-        mergeSort(array3, 0, array3.size() - 1);
+        DefaultQuickSort::quicksort(array3, 0, N - 1, opers3);
         elapsed = std::chrono::high_resolution_clock::now() - start;
         long long millisec3case = std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
 
-        std::cout << N << " " << millisec1case << " " << millisec2case << " " << millisec3case << std::endl;
+        std::cout << "N = " << N << " (" << millisec1case << ", " << opers1 << "), ("<< millisec2case << ", " << opers2 << "), (" << millisec3case << ", " << opers3 << ")" << std::endl;
+        //std::cout << N << " " << millisec1case << " " << millisec2case << " " << millisec3case << std::endl;
     }
 }
 ```
