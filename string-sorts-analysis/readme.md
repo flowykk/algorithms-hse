@@ -16,6 +16,7 @@
 - `DefaultQuickSort`
 - `DefaultMergeSort`
 - `StringQuickSort`
+- `MSDSort`, в котором реализованы методы `defaultMSDsSort` и `quickMSDSort`
 
 Ниже приведен код для каждого из этих классов:
 `DefaultQuickSort`:
@@ -151,6 +152,83 @@ public:
         copy(R_equal.begin(), R_equal.end(), back_inserter(result));
 
         return result;
+    }
+};
+```
+
+`MSDSort`:
+```cpp
+class MSDSort {
+public:
+    static int char_at(string str, int d)
+    {
+        if (str.size() <= d)
+            return -1;
+        else
+            return str.at(d);
+    }
+
+    static void defaultMSDsort(std::vector<std::string> &str, int lo, int hi, int d, size_t &sum) {
+        if (hi <= lo) {
+            return;
+        }
+
+        int count[256 + 2] = {0};
+        unordered_map<int, string> temp;
+
+        for (int i = lo; i <= hi; i++) {
+            int c = char_at(str[i], d);
+            count[c + 2]++;
+        }
+
+        for (int r = 0; r < 256 + 1; r++)
+            count[r + 1] += count[r];
+
+        for (int i = lo; i <= hi; i++) {
+            int c = char_at(str[i], d);
+            temp[count[c + 1]++] = str[i];
+        }
+
+        for (int i = lo; i <= hi; i++)
+            str[i] = temp[i - lo];
+
+
+        for (int r = 0; r < 256; r++)
+            defaultMSDsort(str, lo + count[r], lo + count[r + 1] - 1,d + 1, sum);
+    }
+
+    static void quickMSDsort(std::vector<std::string> &str, int lo, int hi, int d, size_t &sum) {
+        if (hi <= lo) {
+            return;
+        }
+
+        if (hi - lo < 74) {
+            str = StringQuickSort::stringQuickSort(str, 0, sum);
+            return;
+        }
+
+        int count[256 + 2] = {0}; // 74
+        unordered_map<int, string> temp;
+
+        for (int i = lo; i <= hi; i++) {
+            int c = char_at(str[i], d);
+            count[c + 2]++;
+        }
+
+        for (int r = 0; r < 256 + 1; r++)
+            count[r + 1] += count[r];
+
+        for (int i = lo; i <= hi; i++) {
+            int c = char_at(str[i], d);
+            temp[count[c + 1]++] = str[i];
+        }
+
+        for (int i = lo; i <= hi; i++)
+            str[i] = temp[i - lo];
+
+
+        for (int r = 0; r < 256; r++)
+            quickMSDsort(str, lo + count[r], lo + count[r + 1] - 1,d + 1, sum);
     }
 };
 ```
