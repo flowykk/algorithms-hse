@@ -6,7 +6,6 @@
 - `DefaultQuickSort`
 - `DefaultMergeSort`
 - `StringQuickSort`
-- `StringMergeSort`
 
 Ниже приведен код для каждого из этих классов:
 `DefaultQuickSort`:
@@ -217,9 +216,11 @@ vector<string> cutArray(vector<string> array, int maxN, int N) {
 ```
 
 ## Анализ DefaultQuickSort
+
 Для измерения времени работы реализации алгоритма обычной `quickSort` был написан метод experimentQuickSort():
 
-Метод `experimentMerge()`. Где **maxN** - максимальная длина генерируемых массивов, **array1case**, **array2case** и **array3case** - тестовые данные, которые созданы согласно условию с помощью выше описанных методов. В методе присутсвует цикл, в котором перебираются длины генерируемых массивов (от 500 до 4000 с шагом 100). В цикле же каждый из массивов из входных данных "обрезается" по длине **N** с помощью вышеописанного метода `cutArray()`, и над полученными массивами ведутся вычисления времени работы сортировки **mergeSort**, а результат в конце метода выводится на экран.
+Метод `experimentMerge()`. Где **maxN** - максимальная длина генерируемых массивов, **array1case**, **array2case** и **array3case** - тестовые данные, которые созданы согласно условию с помощью выше описанных методов. В методе присутсвует цикл, в котором перебираются длины генерируемых массивов (от 100 до 3000 с шагом 100). В цикле же каждый из массивов из входных данных "обрезается" по длине **N** с помощью вышеописанного метода `cutArray()`, и над полученными массивами ведутся вычисления времени работы сортировки **quickSort**, а результат в конце метода выводится на экран.
+
 ```cpp
 void experimentQuickSort(StringGenerator generator, int maxN, const vector<string>& array1case, const vector<string>& array2case, const vector<string>& array3case) {
     for (int N = 100; N <= maxN; N += 100) {
@@ -250,30 +251,40 @@ void experimentQuickSort(StringGenerator generator, int maxN, const vector<strin
 }
 ```
 
-Метод `experimentMergePlusInsertion()`. Написан аналогично предыдущему методу. Отличия - аргумент **minSize** - размер массива, при котором будет использоваться сортировка **insertionSort**, а внутри цикла используется метод `mergePlusInsertionSort()` для гибридной сортировки массива.
+### Вывод:
+В случае с наборами данных №2 и №3 QuickSort приходит к худшему случаю, ведь выбирая опорный элемент деление массива в этих ситуациях становится неэффективным. А с тестовыми данными №1, где элементы неупорядочены, опорные элементы лучше распределены, а это в свою очередь приводит к лучшей производительности, поэтому алгоритм выполняется в среднем за пару милисекунд.
+По тем же причинам в случаях наоборов данных №2 и №3 производится заметно больше сравнений, чем в случае с набором №1.
+
+## Анализ DefaultQuickSort
+
+Метод `experimentStringQuickSort()`:
+
 ```cpp
-void experimentMergePlusInsertion(int minSize, int maxN, const std::vector<int>& array1case, const std::vector<int>& array2case, const std::vector<int>& array3case) {
-    for (int N = 500; N <= maxN; N += 100) {
-        std::vector<int> array1 = cutArray(array1case, maxN, N);
+void experimentStringQuickSort(StringGenerator generator, int maxN, const vector<string>& array1case, const vector<string>& array2case, const vector<string>& array3case) {
+    for (int N = 100; N <= maxN; N += 100) {
+        size_t opers1 = 0;
+        std::vector<string> array1 = generator.cutArray(array1case, maxN, N);
         auto start = std::chrono::high_resolution_clock::now();
-        mergePlusInsertionSort(array1, minSize, 0, array1.size() - 1);
+        auto res1 = StringQuickSort::stringQuickSort(array1, 0, opers1);
         auto elapsed = std::chrono::high_resolution_clock::now() - start;
         long long millisec1case = std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
 
-        std::vector<int> array2 = cutArray(array2case, maxN, N);
+        size_t opers2 = 0;
+        std::vector<string> array2 = generator.cutArray(array2case, maxN, N);
         start = std::chrono::high_resolution_clock::now();
-        mergePlusInsertionSort(array2, minSize, 0, array2.size() - 1);
+        auto res2 = StringQuickSort::stringQuickSort(array2, 0, opers2);
         elapsed = std::chrono::high_resolution_clock::now() - start;
         long long millisec2case = std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
 
-        std::vector<int> array3 = cutArray(array3case, maxN, N);
-        makeAlmostSorted(array3);
+        size_t opers3 = 0;
+        std::vector<string> array3 = generator.cutArray(array3case, maxN, N);
         start = std::chrono::high_resolution_clock::now();
-        mergePlusInsertionSort(array3, minSize, 0, array3.size() - 1);
+        auto res3 = StringQuickSort::stringQuickSort(array3, 0, opers3);
         elapsed = std::chrono::high_resolution_clock::now() - start;
         long long millisec3case = std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
 
-        std::cout << millisec1case << " " << millisec2case << " " << millisec3case << std::endl;
+        std::cout << "N = " << N << " (" << millisec1case << ", " << opers1 << "), ("<< millisec2case << ", " << opers2 << "), (" << millisec3case << ", " << opers3 << ")" << std::endl;
+        //std::cout << N << " " << millisec1case << " " << millisec2case << " " << millisec3case << std::endl;
     }
 }
 ```
