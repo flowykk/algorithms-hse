@@ -1,3 +1,5 @@
+## Сгенерированный массив строк, N = 3000
+
 ```
 zzHAqlAkOJsMqU%8yOg8rvVPnsw:lI005kppaVurAoVt&7HCl^k2K9413Ul;^;OA&cOKK0:SMcyO5K-So^BD^iwj2sh)l&H0bJ8)-%c@y3z@C^XyNPtksuZn%JSZUgRf1Ol*fZRGyx0yKYKpUHc5;KS9er%O8KbdhjC1!1qFkWEO8TGRefTjEKXS^
 zwsU15IiPVhui3&lD*zT8%%5-G6rhX8MnCWWUaMlF%WuLj!GUfy
