@@ -168,7 +168,7 @@ public:
             return str.at(d);
     }
 
-    static void defaultMSDsort(std::vector<std::string> &str, int lo, int hi, int d, size_t &sum) {
+    static void defaultMSDsort(std::vector<std::string> &str, int lo, int hi, int d, size_t &opers) {
         if (hi <= lo) {
             return;
         }
@@ -194,16 +194,16 @@ public:
 
 
         for (int r = 0; r < 256; r++)
-            defaultMSDsort(str, lo + count[r], lo + count[r + 1] - 1,d + 1, sum);
+            defaultMSDsort(str, lo + count[r], lo + count[r + 1] - 1,d + 1, opers);
     }
 
-    static void quickMSDsort(std::vector<std::string> &str, int lo, int hi, int d, size_t &sum) {
+    static void quickMSDsort(std::vector<std::string> &str, int lo, int hi, int d, size_t &opers) {
         if (hi <= lo) {
             return;
         }
 
         if (hi - lo < 74) {
-            str = StringQuickSort::stringQuickSort(str, 0, sum);
+            str = StringQuickSort::stringQuickSort(str, 0, opers);
             return;
         }
 
@@ -228,7 +228,7 @@ public:
 
 
         for (int r = 0; r < 256; r++)
-            quickMSDsort(str, lo + count[r], lo + count[r + 1] - 1,d + 1, sum);
+            quickMSDsort(str, lo + count[r], lo + count[r + 1] - 1,d + 1, opers);
     }
 };
 ```
@@ -442,3 +442,46 @@ void experimentMergeSort(StringGenerator generator, int maxN, const vector<strin
 
 Смотря на графики можно понять, что на неупорядоченном наборе данных сортировка слиянием работает чуть медленнее, чем в остальных случаях. Это происходит, потому что на неупорядоченном массиве `mergeSort` часто разделяет и сливает элементы, даже если они близки по значению, также затрачиывается больше памяти и ресурсов на рекурсию. Это вызывает дополнительные операции. В упорядоченных массивах (особенно в обратном порядке), меньше слияний, так как большинство элементов уже находятся в нужной позиции. В "почти" отсортированном массиве также меньше перестановок, что ускоряет сортировку.
 По тем же причинам количество посимволньных сравнений во время работы такой сортировки для тестового набора №1 выше, чем для наборов №2 и №3.
+
+## Анализ DefaultMSDSort
+
+Метод `experimentDefaultMSDRadixSort()`:
+
+```cpp
+void experimentDefaultMSDRadixSort(StringGenerator generator, int maxN, const vector<string>& array1case, const vector<string>& array2case, const vector<string>& array3case) {
+    for (int N = 100; N <= maxN; N += 100) {
+        size_t opers1 = 0;
+        std::vector<string> array1 = generator.cutArray(array1case, maxN, N);
+        auto start = std::chrono::high_resolution_clock::now();
+        MSDSort::defaultMSDsort(array1, 0, N - 1, 0, opers1);
+        auto elapsed = std::chrono::high_resolution_clock::now() - start;
+        long long microsec1case = std::chrono::duration_cast<std::chrono::microseconds>(elapsed).count();
+
+        size_t opers2 = 0;
+        std::vector<string> array2 = generator.cutArray(array2case, maxN, N);
+        start = std::chrono::high_resolution_clock::now();
+        MSDSort::defaultMSDsort(array2, 0, N - 1, 0, opers2);
+        elapsed = std::chrono::high_resolution_clock::now() - start;
+        long long microsec2case = std::chrono::duration_cast<std::chrono::microseconds>(elapsed).count();
+
+        size_t opers3 = 0;
+        std::vector<string> array3 = generator.cutArray(array3case, maxN, N);
+        start = std::chrono::high_resolution_clock::now();
+        MSDSort::defaultMSDsort(array3, 0, N - 1, 0, opers3);
+        elapsed = std::chrono::high_resolution_clock::now() - start;
+        long long microsec3case = std::chrono::duration_cast<std::chrono::microseconds>(elapsed).count();
+
+        //cout << "N = " << N << " (" << millisec1case << ", " << opers1 << "), ("<< millisec2case << ", " << opers2 << "), (" << millisec3case << ", " << opers3 << ")" << endl;
+        cout << N << " " << microsec1case << " " << opers1 << " " << microsec2case << " " << opers2 << " " << microsec3case << " " << opers3 << " " << endl;
+    }
+}
+```
+
+### !!!
+
+Измерения времени ведутся в **микросекундах**, а не в **милисекундах**, чтобы результаты были более наглядные.
+
+### График
+![Снимок экрана 2024-05-16 в 15 36 01](https://github.com/flowykk/algorithms-hse/assets/71427624/665c3e5e-b3d3-4a08-95af-d6391b873bc1)
+
+### Вывод:
