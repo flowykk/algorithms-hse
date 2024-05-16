@@ -261,6 +261,13 @@ void experimentQuickSort(StringGenerator generator, int maxN, const vector<strin
 }
 ```
 
+### Графики
+
+<div align="center">
+  <img src="https://github.com/flowykk/algorithms-hse/assets/71427624/690d6af5-ef59-4126-95de-caca38d5492f" width="500"> 
+  <img src="https://github.com/flowykk/algorithms-hse/assets/71427624/290f0815-2884-4c39-aee7-9c2cbb5cdee1" width="500"> 
+</div>
+
 ### Вывод
 
 В случае с наборами данных №2 и №3 QuickSort приходит к худшему случаю, ведь выбирая опорный элемент деление массива в этих ситуациях становится неэффективным. А с тестовыми данными №1, где элементы неупорядочены, опорные элементы лучше распределены, а это в свою очередь приводит к лучшей производительности, поэтому алгоритм выполняется в среднем за пару милисекунд.
