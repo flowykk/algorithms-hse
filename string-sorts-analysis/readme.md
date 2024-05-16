@@ -488,8 +488,6 @@ void experimentDefaultMSDRadixSort(StringGenerator generator, int maxN, const ve
 ### График
 ![Снимок экрана 2024-05-16 в 15 36 01](https://github.com/flowykk/algorithms-hse/assets/71427624/665c3e5e-b3d3-4a08-95af-d6391b873bc1)
 
-### Вывод:
-
 ## Анализ Quick+DefaultMSDSort
 
 Метод `experimentQuickMSDRadixSort()`:
@@ -530,5 +528,3 @@ void experimentQuickMSDRadixSort(StringGenerator generator, int maxN, const vect
 ### График
 
 ![Снимок экрана 2024-05-16 в 16 00 35](https://github.com/flowykk/algorithms-hse/assets/71427624/122c3418-678e-47c4-a23b-736adbb97e2d)
-
-### Вывод:
