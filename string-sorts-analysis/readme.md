@@ -203,7 +203,8 @@ public:
         }
 
         if (hi - lo < 74) {
-            str = StringQuickSort::stringQuickSort(str, 0, opers);
+            auto cutted = std::vector<std::string>(str.begin() + lo, str.begin() + hi);
+            auto res = StringQuickSort::stringQuickSort(cutted, d, opers);
             return;
         }
 
@@ -483,5 +484,48 @@ void experimentDefaultMSDRadixSort(StringGenerator generator, int maxN, const ve
 
 ### График
 ![Снимок экрана 2024-05-16 в 15 36 01](https://github.com/flowykk/algorithms-hse/assets/71427624/665c3e5e-b3d3-4a08-95af-d6391b873bc1)
+
+### Вывод:
+
+## Анализ Quick+DefaultMSDSort
+
+Метод `experimentQuickMSDRadixSort()`:
+
+```cpp
+void experimentQuickMSDRadixSort(StringGenerator generator, int maxN, const vector<string>& array1case, const vector<string>& array2case, const vector<string>& array3case) {
+    for (int N = 100; N <= maxN; N += 100) {
+        size_t opers1 = 0;
+        std::vector<string> array1 = generator.cutArray(array1case, maxN, N);
+        auto start = std::chrono::high_resolution_clock::now();
+        MSDSort::quickMSDsort(array1, 0, N - 1, 0, opers1);
+        auto elapsed = std::chrono::high_resolution_clock::now() - start;
+        long long microsec1case = std::chrono::duration_cast<std::chrono::microseconds>(elapsed).count();
+
+        size_t opers2 = 0;
+        std::vector<string> array2 = generator.cutArray(array2case, maxN, N);
+        start = std::chrono::high_resolution_clock::now();
+        MSDSort::quickMSDsort(array2, 0, N - 1, 0, opers2);
+        elapsed = std::chrono::high_resolution_clock::now() - start;
+        long long microsec2case = std::chrono::duration_cast<std::chrono::microseconds>(elapsed).count();
+
+        size_t opers3 = 0;
+        std::vector<string> array3 = generator.cutArray(array3case, maxN, N);
+        start = std::chrono::high_resolution_clock::now();
+        MSDSort::quickMSDsort(array3, 0, N - 1, 0, opers3);
+        elapsed = std::chrono::high_resolution_clock::now() - start;
+        long long microsec3case = std::chrono::duration_cast<std::chrono::microseconds>(elapsed).count();
+
+        //cout << "N = " << N << " (" << millisec1case << ", " << opers1 << "), ("<< millisec2case << ", " << opers2 << "), (" << millisec3case << ", " << opers3 << ")" << endl;
+        cout << N << " " << microsec1case << " " << microsec2case << " " << microsec3case << " " << endl;
+    }
+```
+
+### !!!
+
+Измерения времени ведутся в **микросекундах**, а не в **милисекундах**, чтобы результаты были более наглядные.
+
+### График
+
+![Снимок экрана 2024-05-16 в 16 00 35](https://github.com/flowykk/algorithms-hse/assets/71427624/122c3418-678e-47c4-a23b-736adbb97e2d)
 
 ### Вывод:
