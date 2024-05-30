@@ -92,7 +92,7 @@ std::pair<int, int> knapsack(int W, vector<Item> &items) {
     int res = dp[n][W];
     int w = W;
     int sumWeights = 0;
-    cout << "Выбранные предметы: " << endl;
+    cout << "- Выбранные предметы: " << endl;
     for (int i = n; i > 0 && res > 0; i--) {
         if (res == dp[i - 1][w])
             continue;
@@ -138,7 +138,7 @@ int main() {
             {30, 3}
     };
 
-    cout << "Измененные значения: " << endl;
+    cout << "- Измененные характеристики предметов: " << endl;
     vector<Item> items = proceed(floatItems);
     for (int i = 0; i < items.size(); i++) {
         cout << "Предмет: №" << i + 1 << ", цена: " << items[i].value << ", вес: " << items[i].weight << endl;
@@ -146,19 +146,18 @@ int main() {
 
     int denom = static_cast<int>(items[0].weight / floatItems[0].weight);
     W *= denom;
-    cout << "Общий множитель весов: " << denom << endl;
-    cout << "Обновленная вместимость рюкзака: " << W << endl;
+    cout << "\n- Общий множитель весов: " << denom << endl;
+    cout << "- Обновленная вместимость рюкзака: " << W << endl;
 
         // Вычисление и вывод максимальной стоимости, которую можно получить
     cout << endl;
     std::pair<int, int> knapsackResult = knapsack(W, items);
     int maxValue = knapsackResult.first;
     int sumWeights = knapsackResult.second;
-    cout << "\nПолученный суммарный вес (с учетом общего множителя): " << sumWeights << endl;
+    cout << "\n- Ответ на задачу:" << endl;
+    cout << "Полученный суммарный вес (с учетом общего множителя): " << sumWeights << endl;
+    cout << "Полученный суммарный вес (без учета общего множителя): " << static_cast<double>(sumWeights) / denom << endl;
     cout << "Полученная максимальная прибыль (с учетом общего множителя): " << maxValue << endl;
-
-    cout << "\nПолученный суммарный вес (без учета общего множителя): " << static_cast<double>(sumWeights) / denom << endl;
-    cout << "Полученная максимальная прибыль (без учета общего множителя): " << static_cast<double>(maxValue) / denom << endl;
 
     return 0;
 }
